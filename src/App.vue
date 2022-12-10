@@ -1,22 +1,24 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+// import HelloWorld from './components/HelloWorld.vue'
 import FooterVue from './components/layouts/footer.vue';
 </script>
 
 <template>
-  <header style="width: 100%">
+  <header >
     <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
     <!-- <LoginVue></LoginVue> -->
     
 
     <!-- <div class="wrapper"> -->
       <!-- <HelloWorld msg="You did it!" /> -->
-      
-      <nav >
+      <div class="app-container bg-light">
+        <nav >
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
+      </div>
+      
     <!-- </div> -->
   </header>
 
@@ -24,7 +26,9 @@ import FooterVue from './components/layouts/footer.vue';
 <FooterVue></FooterVue>
 </template>
 
-<style scoped>
+<style>
+
+@import '@/assets/base.css';
 /* header {
   line-height: 1.5;
   max-height: 100vh;

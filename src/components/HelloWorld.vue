@@ -1,13 +1,6 @@
-<script setup>
-defineProps({
-  msg: {
-    type: String,
-    required: true
-  }
-})
-</script>
 
-<template>
+
+<!-- <template>
   <div class="greetings">
     <h1 class="green">{{ msg }}</h1>
     <h3>
@@ -16,8 +9,16 @@ defineProps({
       <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>.
     </h3>
   </div>
-</template>
+</template> -->
 
+<script setup>
+defineProps({
+  msg: {
+    type: String,
+    required: true
+  }
+})
+</script>
 <style scoped>
 h1 {
   font-weight: 500;
