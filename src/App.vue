@@ -1,7 +1,9 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 // import HelloWorld from './components/HelloWorld.vue'
-import FooterVue from './components/layouts/footer.vue';
+import FooterVue from './components/layouts/Footer.vue';
+import HeaderVue from './components/Header.vue';
+// import Header from './components/header.vue';
 </script>
 
 <template>
@@ -12,18 +14,19 @@ import FooterVue from './components/layouts/footer.vue';
 
     <!-- <div class="wrapper"> -->
       <!-- <HelloWorld msg="You did it!" /> -->
+      <HeaderVue></HeaderVue>
       <div class="app-container bg-light">
         <nav >
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
       </div>
-      
+      <!-- <FooterVue></FooterVue> -->
     <!-- </div> -->
   </header>
-
+  
   <RouterView />
-<FooterVue></FooterVue>
+  <FooterVue></FooterVue>
 </template>
 
 <style>

@@ -18,16 +18,26 @@
     <h1>Login</h1>
     <div class="content">
       <div class="input-field">
-        <input type="email" id="username" v-model="input.username"  placeholder="Email" autocomplete="nope">
+        <input type="firstname" id="firstname" v-model="input.firstname"  placeholder="First Name" autocomplete="nope">
       </div>
       <div class="input-field">
+        <input type="lastname" id="lastname" v-model="input.lastname"  placeholder="Last Name" autocomplete="nope">
+      </div>
+      <div class="input-field">
+        <input type="email" id="username" v-model="input.username"  placeholder="Email" autocomplete="nope">
+      </div>
+      
+      <div class="input-field">
         <input type="password" id="password" v-model="input.password"  placeholder="Password" autocomplete="new-password">
+      </div>
+      <div class="input-field">
+        <input type="nativelanguage" id="nativelanguage" v-model="input.nativelanguage"  placeholder="Native Language" autocomplete="nope">
       </div>
       <a href="#" class="link">Forgot Your Password?</a>
     </div>
     <div class="action">
-      <button type="button" v-on:click="signup()">Register</button>
-      <button type="button" v-on:click="login()">Login</button>
+      <!-- <button>Register</button> -->
+      <button type="button" v-on:click="signup()">Signup</button>
       <!-- <button>Sign in</button> -->
     </div>
   </form>
@@ -49,37 +59,71 @@
             }
         },
         methods: {
-            login() {
+          signup() {
                 if(this.input.username != "" && this.input.password != "") {
                     // This should actually be an api call not a check against this.$parent.mockAccount
                     this.axios.post(`${import.meta.env.VITE_BASE_URL}v1/auth/device`,{
-                        clientPlatform: "solo_web", clientPlatformVersion: "",
+                        clientPlatform: "solo_web", clientPlatformVersion: "maintenance-19-dec-v2",
                         deviceType: "web", locale :"en-US"}).then((response) => {
-                        // console.log(response.data.token)
-                        this.axios.post(`${import.meta.env.VITE_BASE_URL}v1/auth/user`,{
+                        console.log("????????",response.data.token)
+                        this.axios.post(`${import.meta.env.VITE_BASE_URL}v1/users`,{
                             email: this.input.username,
-                            password: this.input.password
+                            password: this.input.password,
+                            firstName: this.input.firstname,
+                            lastName: this.input.lastname,
+                            nativeLangCode: this.input.nativelanguage,
+                            organization: {name: ""},
+                            flags: []
                         },
                         {
                             headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': response.data.token
+                            'Authorization': "Bearer "+response.data.token
                             }
                         }
                         ).then((response)=>{
-                            // console.log("-******-->",response.data.token) 
-                            if(response.data.token != "") {
-                                if (response.data.token) {
-                                    
-                                    localStorage.setItem('user-token', JSON.stringify(response.data));
-                                    }
-                                    else{
-                                        // console.log("here!!!!")
-                                    }
-                                this.$router.replace({ name: "history" });
+                            console.log("-******-->",response.status) 
+                            if(response.status == 201) {
+                                
+                              if(this.input.username != "" && this.input.password != "") {
+                                      // This should actually be an api call not a check against this.$parent.mockAccount
+                                      this.axios.post(`${import.meta.env.VITE_BASE_URL}v1/auth/device`,{
+                                          clientPlatform: "solo_web", clientPlatformVersion: "",
+                                          deviceType: "web", locale :"en-US"}).then((response) => {
+                                          // console.log(response.data.token)
+                                          this.axios.post(`${import.meta.env.VITE_BASE_URL}v1/auth/user`,{
+                                              email: this.input.username,
+                                              password: this.input.password
+                                          },
+                                          {
+                                              headers: {
+                                              'Content-Type': 'application/json',
+                                              'Authorization': response.data.token
+                                              }
+                                          }
+                                          ).then((response)=>{
+                                              // console.log("-******-->",response.data.token) 
+                                              if(response.data.token != "") {
+                                                  if (response.data.token) {
+                                                      
+                                                      localStorage.setItem('user-token', JSON.stringify(response.data));
+                                                      }
+                                                      else{
+                                                          // console.log("here!!!!")
+                                                      }
+                                                  this.$router.replace({ name: "history" });
+                                              } else {
+                                              
+                                              }
+                                          }).catch(function (error){
+                                            alert("invalid credentials entered!");
+                                          });
+                                      })
+                                      console.log(">>>>>>>>>>>>>");
+                                  } else {
+                                  }
                             } else {
                              
-                                console.log("The username and / or password is incorrect");
                             }
                         }).catch(function (error){
                           alert("invalid credentials entered!");
@@ -89,9 +133,6 @@
                 } else {
                     console.log("A username and password must be present");
                 }
-            },
-            signup(){
-              this.$router.replace({ name: "signup" });
             }
         }
     }

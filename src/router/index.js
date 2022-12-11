@@ -26,6 +26,11 @@ const router = createRouter({
       path: '/history',
       name: 'history',
       component: () => import('../views/SessionHistory.vue')
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: () => import('../views/Signup.vue')
     }
   ]
 })
