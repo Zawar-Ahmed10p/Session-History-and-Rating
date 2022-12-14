@@ -1,6 +1,6 @@
-# basic-app
+# Session-History-and-Rating
 
-This template should help get you started developing with Vue 3 in Vite.
+This app has login, signup, session history and session detail vies aswell as session can be rating with no existing rating record
 
 ## Recommended IDE Setup
 
