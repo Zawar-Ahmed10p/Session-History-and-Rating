@@ -5,11 +5,26 @@
 <!-- <h3>Reasons for Choosing US</h3> -->
 <!-- <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero nostrum quis, odio veniam itaque ullam debitis qui magnam consequatur ab. Vero nostrum quis, odio veniam itaque ullam debitis qui magnam consequatur ab.</p> -->
 	<br>
-	<!-- <button>READ MORE</button> -->
+	<!-- <button type="button" v-on:click="logout()">Logout</button> -->
+	<!-- <nav >
+        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/about">About</RouterLink>
+      </nav> -->
 		</div>
 </header>
 
 </template>
+<script>
+ export default {
+	methods: {
+		logout() {
+			localStorage.removeItem('user-token');
+			this.$router.replace({ name: "login" });
+
+			}
+		}
+ }
+</script>
 <style>
 *{padding: 0; margin: 0; box-sizing: border-box;}
 body{height: 50px;}
@@ -45,7 +60,23 @@ h3, p {
 	margin-bottom: 30px;
 }
 
-button {
+.header .action button {
+  width: 100%;
+  border: none;
+  padding: 18px;
+  font-family: 'Rubik', sans-serif;
+  cursor: pointer;
+  text-transform: uppercase;
+  background: #e8e9ec;
+  color: #777;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 0;
+  letter-spacing: 0.2px;
+  outline: 0;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+}
+/* .history-form .action button {
 	border: none;
 	outline: none;
 	padding: 10px 20px;
@@ -54,7 +85,7 @@ button {
 	background: #fff;
 	margin-bottom: 50px;
 	box-shadow: 0 3px 20px 0 #0000003b;
-}
+} */
 button:hover{
 	cursor: pointer;
 }

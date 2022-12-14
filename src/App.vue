@@ -16,10 +16,7 @@ import HeaderVue from './components/Header.vue';
       <!-- <HelloWorld msg="You did it!" /> -->
       <HeaderVue></HeaderVue>
       <div class="app-container bg-light">
-        <nav >
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+        
       </div>
       <!-- <FooterVue></FooterVue> -->
     <!-- </div> -->

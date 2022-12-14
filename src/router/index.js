@@ -6,8 +6,8 @@ const router = createRouter({
   routes: [
     {
       path: '/home',
-      name: 'home',
-      component: HomeView
+      name: 'history',
+      component: () => import('../views/SessionHistory.vue')
     },
     {
       path: '/about',
@@ -31,6 +31,18 @@ const router = createRouter({
       path: '/signup',
       name: 'signup',
       component: () => import('../views/Signup.vue')
+    },
+    {
+      path: '/sessiondetail/:sessionid',
+      name: 'sessiondetail',
+      props: true,
+      component: () => import('../views/SessionDetail.vue')
+    },
+    {
+      path: '/rating/:sessionid',
+      name: 'rating',
+      props: true,
+      component: () => import('../views/Rating.vue')
     }
   ]
 })

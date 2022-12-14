@@ -66,12 +66,14 @@
                             'Authorization': response.data.token
                             }
                         }
-                        ).then((response)=>{
+
+                        ).then((resp)=>{
                             // console.log("-******-->",response.data.token) 
-                            if(response.data.token != "") {
-                                if (response.data.token) {
-                                    
-                                    localStorage.setItem('user-token', JSON.stringify(response.data));
+                            if(resp.data.token != "") {
+                                if (resp.data.token) {
+                                    // var tok = {}
+                                    localStorage.setItem('user-token', JSON.stringify(resp.data));
+                                    localStorage.setItem('device-token', JSON.stringify(response.data.token));
                                     }
                                     else{
                                         // console.log("here!!!!")

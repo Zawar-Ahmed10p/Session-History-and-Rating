@@ -1,4 +1,5 @@
 <template>
+	<button type="button" v-on:click="logout()">Logout</button>
   <div class="table-users" >
     <div class="header">History</div>
     <div style="height: 500px; overflow: auto">
@@ -9,7 +10,7 @@
       <!-- <th  v-for="field in fields" :key='field' @click="sortTable(field)" > 
         {{field}} <i class="bi bi-sort-alpha-down" aria-label='Sort Icon'></i>
        </th> -->
-       <th>ID</th><th>Type</th><th>Service Platform</th><th>Happens At</th>
+       <th>ID</th><th>Type</th><th>Service Platform</th><th>Happens At</th><th>Rating</th><th></th>
     </tr>
   </thead>
   <!-- {{filteredList}} -->
@@ -20,46 +21,89 @@
       <!-- Loop through the list get the each student data -->
       <tr v-for="(item, index) in filteredList" :key='item'>
       <!-- <td v-for="field in fields" :key='field'>{{item[field]}}</td> -->
-      <td><img :src=item.createdBy.avatarURL alt="not available" />{{index}}</td>
-      <td>{{item.type}}</td>
+      <td ><a @click="$router.push({name: 'sessiondetail',params:{sessionid: item.id}})" class="row-link">
+		
+		<img :src=item.createdBy.avatarURL alt="not available" />{{index}}</a></td>
+		<!-- <SessionDetail :pass_data="myData"/> -->
+      <td > {{item.type}}</td>
       <td>{{item.servicePlatform}}</td>
+	  
       <td>{{item.happensAt}}</td>
+	  <td  ><span v-if="item.rating"> {{item.rating.stars}}</span> </td>
+	  <td  ><span v-if="!item.rating">
+		<!-- <img src="@/assets/rate.png"/>  -->
+		<select name="rating" id="rating" v-on:change="selectedOption($event.target.value, item.id)">
+			<option value=1>1</option>
+			<option value=2>2</option>
+			<option value=3>3</option>
+			<option value=4>4</option>
+			<option value=5>5</option>
+		</select>
+	</span> </td>
+	  
+	  <SessionDetailVue username='matt' />
       
     </tr>
   </tbody>
 </table> 
+<TaskItem v-for="task in tasks" v-bind:task="task" />
 </div>
 </div>
 </template>
 
 <script>
+      	
+import SessionDetail from "../views/SessionDetail.vue"
     export default {
         name: 'fetchHistory',
         data() {
-            const filteredList = [
-                // {ID:"01", Name: "Abiola Esther", Course:"Computer Science", Gender:"Female", Age:"17"},
-                // {ID:"02", Name: "Robert V. Kratz", Course:"Philosophy", Gender:"Male", Age:'19'},
-                // {ID:"03", Name: "Kristen Anderson", Course:"Economics", Gender:"Female", Age:'20'},
-                // {ID:"04", Name: "Adam Simon", Course:"Food science", Gender:"Male", Age:'21'},
-                // {ID:"05", Name: "Daisy Katherine", Course:"Business studies", Gender:"Female", Age:'22'},  
-                ]
+            const filteredList = []
 
-            const fields = [
-                // 'id','Name','Course','Gender','Age'
-                ]
-                return  {fields,filteredList}
+            const fields = []
+				var myData="asdasdasdasd"
+                return  {fields,filteredList,myData}
                 
         },
+		components:{
+			SessionDetail
+		},
         async created(){
             console.log(import.meta.env.VITE_BASE_URL)
         await this.history()
     
  },
         methods: {
+		async selectedOption(rating,sessionID){
+				console.log(rating, sessionID)
+				let user = JSON.parse(localStorage.getItem('user-token'));
+              this.axios.post(`${import.meta.env.VITE_BASE_URL}v1/sessions/${sessionID}/ratings`,
+			  {
+				stars: parseInt(rating), qualityStars: parseInt(rating), userTagIDs: [], technicalTagIDs: [], comment: null
+			  },
+                        {
+                            headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + user.token
+                            }
+                        }
+                        ).then((response)=>{
+                            // console.log("--->",response.data.token)
+                            if(response.data.token != "") {
+                                if (response.data) {
+                                    console.log(response.data)
+                                    this.filteredList=response.data.sessions
+                                    // return response.data
+                                    }
+                            } else {
+                                console.log("The username and / or password is incorrect");
+                            }
+                        })
+				await this.history()
+			},
           history() {
             // console.log("-------->",localStorage.getItem('user-token'))
             let user = JSON.parse(localStorage.getItem('user-token'));
-              this.axios.get(`${import.meta.env.VITE_BASE_URL}v1/sessions?_relations=rating&_criteria=billable,unresolved&happensBefore=2022-12-08T06:40:57&limit=50&role=creator&skip=0`,
+              this.axios.get(`${import.meta.env.VITE_BASE_URL}v1/sessions?_relations=rating&_criteria=billable,unresolved&limit=50&role=creator&skip=0&end_reason=done`,
                         {
                             headers: {
                             'Content-Type': 'application/json',
@@ -89,7 +133,13 @@
                     password: ""
                 }
             }
-            }
+            },
+			logout() {
+			localStorage.removeItem('user-token');
+			this.$router.replace({ name: "login" });
+
+			
+		}
           }
         }
 </script>
